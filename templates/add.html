@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marken</title>
+</head>
+<body>
+    <h1>Meine Marken</h1>
+    <form method="POST" action="/">
+        {{ form.csrf_token }}
+        {{ form.gebiet.label }} {{ form.gebiet(size=20) }}
+        {{ form.michnr.label }} {{ form.michnr(size=4) }}
+        {{ form.entwertung.label }} {{ form.entwertung(size=3) }}
+        <input type="submit" value="Go">
+    </form>
+
+
+</body>
+</html>
