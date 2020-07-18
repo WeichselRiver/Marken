@@ -32,6 +32,8 @@ class MyForm(FlaskForm):
 def index():
     return render_template('index.html')
 
+#   ttt1
+
 @app.route('/add', methods=('GET', 'POST'))
 def add():
     form = MyForm()
