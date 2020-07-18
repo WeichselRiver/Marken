@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField, SelectField
@@ -22,19 +22,25 @@ class Marke(db.Model):
 
 
 class MyForm(FlaskForm):
-    entwertungen = ['Postfisch','Falz', 'Gestempelt']
+    entwertungen = ['Postfrisch','Falz', 'Gestempelt']
 
     gebiet = StringField('Gebiet', validators=[DataRequired()])
     michnr = IntegerField('MichNr', validators=[DataRequired()])
     entwertung = SelectField('Entwertung',choices=entwertungen)
 
-@app.route('/', methods=('GET', 'POST'))
-def submit():
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+#   ttt1
+
+@app.route('/add', methods=('GET', 'POST'))
+def add():
     form = MyForm()
     if form.validate_on_submit():
         print(form.gebiet.data)
-        return redirect('/')
-    return render_template('index.html', form=form)
+        return redirect(url_for('index'))
+    return render_template('add.html', form=form)
 
 if __name__ == "__main__":
     app.run(debug=True)
