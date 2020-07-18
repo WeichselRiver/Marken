@@ -15,31 +15,37 @@ db = SQLAlchemy(app)
 class Marke(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     gebiet = db.Column(db.String(120), nullable=False)
+    michnr = db.Column(db.Integer, nullable=False)
+    entwertung = db.Column(db.String(10), nullable=False)
+    anzahl = db.Column(db.Integer)
 
 
     def __repr__(self):
-        return f"{self.gebiet}, MichNr"
+        return f"{self.gebiet}, MichNr {self.michnr}, {self.entwertung} : {self.anzahl}"
 
 
 class MyForm(FlaskForm):
+    gebiete = ['AD Baden','Berlin (West)']
     entwertungen = ['Postfrisch','Falz', 'Gestempelt']
 
-    gebiet = StringField('Gebiet', validators=[DataRequired()])
+    gebiet = SelectField('Gebiet', choices=gebiete, validators=[DataRequired()])
     michnr = IntegerField('MichNr', validators=[DataRequired()])
-    entwertung = SelectField('Entwertung',choices=entwertungen)
+    entwertung = SelectField('Entwertung', choices=entwertungen, validators=[DataRequired()])
+    anzahl = IntegerField('Anzahl')
 
-@app.route('/')
+@app.route('/', methods =['GET', 'POST'])
 def index():
-    return render_template('index.html')
+    marken_list = Marke.query.all()
+    return render_template('index.html', marken_list = marken_list)
 
-#   ttt1
 
-@app.route('/add', methods=('GET', 'POST'))
+
+@app.route('/add', methods =['GET', 'POST'])
 def add():
     form = MyForm()
     if form.validate_on_submit():
         print(form.gebiet.data)
-        return redirect(url_for('index'))
+        return redirect('/')
     return render_template('add.html', form=form)
 
 if __name__ == "__main__":
