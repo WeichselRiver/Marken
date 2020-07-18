@@ -22,7 +22,7 @@ class Marke(db.Model):
 
 
 class MyForm(FlaskForm):
-    entwertungen = ['Postfisch','Falz', 'Gestempelt']
+    entwertungen = ['Postfrisch','Falz', 'Gestempelt']
 
     gebiet = StringField('Gebiet', validators=[DataRequired()])
     michnr = IntegerField('MichNr', validators=[DataRequired()])
