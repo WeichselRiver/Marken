@@ -1,30 +1,42 @@
-#%%
-
-
-class MichNr:
-    def __init__(self, gebiet : str, michnr: int, bild = None):
-        self.gebiet = gebiet
-        self.michnr = michnr
-        self.bild = bild
-    def __str__(self):
-        return f"{self.gebiet}, MichNr {self.michnr}"
-
-#%%
-class Marke(MichNr):
-    def __init__(self, gebiet, michnr, entwertung, bild = None,  besitz = 0):
-        super().__init__(gebiet, michnr, bild)
-        self.entwertung = entwertung
-        self.besitz = besitz
-
-
-#%%
-m1 = Marke("re", 1, bild=None, entwertung="gest")
+from flask import Flask, render_template, request, redirect
+from flask_sqlalchemy import SQLAlchemy
+from flask_wtf import FlaskForm
+from wtforms import StringField, IntegerField, SelectField
+from wtforms.validators import DataRequired
 
 
 
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
+app.config['SECRET_KEY'] = "secretkey"
+
+db = SQLAlchemy(app)
+
+class Marke(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    gebiet = db.Column(db.String(120), nullable=False)
 
 
-# %%
-print(type(m1))
+    def __repr__(self):
+        return f"{self.gebiet}, MichNr"
 
-# %%
+
+class MyForm(FlaskForm):
+    entwertungen = ['Postfisch','Falz', 'Gestempelt']
+
+    gebiet = StringField('Gebiet', validators=[DataRequired()])
+    michnr = IntegerField('MichNr', validators=[DataRequired()])
+    entwertung = SelectField('Entwertung',choices=entwertungen)
+
+@app.route('/', methods=('GET', 'POST'))
+def submit():
+    form = MyForm()
+    if form.validate_on_submit():
+        print(form.gebiet.data)
+        return redirect('/')
+    return render_template('index.html', form=form)
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+

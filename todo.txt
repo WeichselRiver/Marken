@@ -1,0 +1,4 @@
+# test alembic
+# weitere Felder:
+    datum des eintrags
+    bild url
