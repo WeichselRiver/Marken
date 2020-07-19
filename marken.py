@@ -25,10 +25,10 @@ class Marke(db.Model):
 
 
 class MyForm(FlaskForm):
-    gebiete = ['AD Baden','Berlin (West)']
-    entwertungen = ['Postfrisch','Falz', 'Gestempelt']
+    gebiete = [('AD Baden', 'AD Baden'), ('Berlin', 'Berlin') ]
+    entwertungen = [('Postfrisch', 'Postfrisch'), ('Falz', 'Falz'), ('Gestempelt', 'Gestempelt')]
 
-    gebiet = SelectField('Gebiet', choices=gebiete, validators=[DataRequired()])
+    gebiet = SelectField('Gebiet', choices=gebiete)
     michnr = IntegerField('MichNr', validators=[DataRequired()])
     entwertung = SelectField('Entwertung', choices=entwertungen, validators=[DataRequired()])
     anzahl = IntegerField('Anzahl')
@@ -42,10 +42,22 @@ def index():
 
 @app.route('/add', methods =['GET', 'POST'])
 def add():
+    
     form = MyForm()
     if form.validate_on_submit():
-        print(form.gebiet.data)
-        return redirect('/')
+        fb_gebiet = form.gebiet.data
+        fb_michnr = form.michnr.data
+        fb_entwertung = form.entwertung.data
+        fb_anzahl = form.anzahl.data
+        print(fb_gebiet, fb_michnr, fb_entwertung, fb_anzahl)
+        new_marke = Marke(gebiet = fb_gebiet, 
+        michnr = fb_michnr, 
+        entwertung=fb_entwertung, 
+        anzahl=fb_anzahl)
+        db.session.add(new_marke)
+        db.session.commit()
+        return redirect(url_for('index'))
+        
     return render_template('add.html', form=form)
 
 if __name__ == "__main__":

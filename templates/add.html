@@ -7,12 +7,12 @@
 </head>
 <body>
     <h1>Meine Marken</h1>
-    <form method="POST" action="/">
-        {{ form.csrf_token }}
+    <form method="POST" action="/add">
+        {{ form.hidden_tag() }}
         {{ form.gebiet.label }} {{ form.gebiet(size=4) }}
         {{ form.michnr.label }} {{ form.michnr(size=4) }}
-        {{ form.entwertung.label }} {{ form.entwertung(size=3) }}
-        {{ form.anzahl.label }} {{ form.anzahl(size=3) }}
+        {{ form.entwertung.label }} {{ form.entwertung(size=1) }}
+        {{ form.anzahl.label }} {{ form.anzahl(size=4) }}
         <input type="submit" value="Go">
     </form>
 
