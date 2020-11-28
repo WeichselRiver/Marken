@@ -1,3 +1,1 @@
-Gebiet,MichNr,Variante,Preis,Anzahl
-AD Baden, 1, "Entwertung : o; Farbe : b; geprueft: True",, 1
-AD Baden,2,Entwertung : o,,5
+{ "Gebiet" : "AD Baden"}
